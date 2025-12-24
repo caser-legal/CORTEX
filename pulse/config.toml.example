@@ -1,0 +1,23 @@
+# PULSE Configuration Template
+# Copy to ~/.codex/config.toml and customize
+
+model = "o4-mini"
+model_provider = "openai"
+
+# Optional: NVIDIA NIM integration
+# model = "nvidia/nemotron-3-nano-30b-a3b"
+# model_provider = "nvidia-nim"
+
+# [model_providers.nvidia-nim]
+# name = "NVIDIA NIM"
+# base_url = "https://integrate.api.nvidia.com/v1"
+# env_key = "NGC_API_KEY"
+# wire_api = "chat"
+
+# MCP Server integration (connects to DORY)
+# [mcp_servers.dory]
+# command = "npx"
+# args = ["tsx", "/path/to/CORTEX/dory/mcp-server.ts"]
+# cwd = "/path/to/CORTEX/dory"
+# startup_timeout_sec = 120
+# tool_timeout_sec = 120

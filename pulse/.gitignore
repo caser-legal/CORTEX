@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Personal data
+history.jsonl
+sessions/
+*.json
+!*example*.json
+
+# Config with secrets
+config.toml
+mcp.json
+
+# Logs
+*.log
+log/
+
+# OS
+.DS_Store
