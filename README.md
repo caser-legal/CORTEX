@@ -226,53 +226,155 @@ PULSE is the autonomous agent orchestration system with session memory.
 
 # 🔗 Integration
 
-CORTEX integrates DORY and PULSE via MCP (Model Context Protocol).
+CORTEX integrates DORY and PULSE via MCP (Model Context Protocol), with support for multiple AI clients.
+
+## Supported Clients
+
+| Client | Model | Use Case |
+|--------|-------|----------|
+| **Kiro CLI** (AWS) | Claude Opus 4.5 | Interactive development with Dory agent |
+| **Codex CLI** (OpenAI) | o4-mini / GPT-4 | Autonomous app building with PULSE |
+| **Dory Web UI** | Nemotron 3 Nano | Browser-based chat interface |
 
 ## How It Works
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        CORTEX                               │
-├─────────────────────────┬───────────────────────────────────┤
-│         DORY            │           PULSE                   │
-│  ┌─────────────────┐    │    ┌─────────────────┐            │
-│  │  NVIDIA NIM     │    │    │  Anchor Memory  │            │
-│  │  (LLM Backend)  │    │    │  (Session State)│            │
-│  └────────┬────────┘    │    └────────┬────────┘            │
-│           │             │             │                     │
-│  ┌────────▼────────┐    │    ┌────────▼────────┐            │
-│  │   RAG V2        │◄───┼────│  Agent System   │            │
-│  │   Pipeline      │    │    │  (Multi-Agent)  │            │
-│  └────────┬────────┘    │    └────────┬────────┘            │
-│           │             │             │                     │
-│  ┌────────▼────────┐    │    ┌────────▼────────┐            │
-│  │   MCP Server    │◄───┼────│  Codex CLI      │            │
-│  │   (35 Tools)    │    │    │  (Orchestrator) │            │
-│  └─────────────────┘    │    └─────────────────┘            │
-└─────────────────────────┴───────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                           CORTEX                                    │
+├─────────────────────────┬───────────────────────────────────────────┤
+│         DORY            │           CLIENTS                         │
+│  ┌─────────────────┐    │    ┌─────────────────┐                    │
+│  │  NVIDIA NIM     │    │    │  Kiro CLI       │ ← Claude Opus 4.5  │
+│  │  (LLM Backend)  │    │    │  (Dory Agent)   │                    │
+│  └────────┬────────┘    │    └────────┬────────┘                    │
+│           │             │             │                             │
+│  ┌────────▼────────┐    │    ┌────────▼────────┐                    │
+│  │   RAG V2        │◄───┼────│  Codex CLI      │ ← PULSE agents     │
+│  │   Pipeline      │    │    │  (Orchestrator) │                    │
+│  └────────┬────────┘    │    └────────┬────────┘                    │
+│           │             │             │                             │
+│  ┌────────▼────────┐    │    ┌────────▼────────┐                    │
+│  │   MCP Server    │◄───┼────│  Context7       │ ← Live docs        │
+│  │   (36 Tools)    │    │    │  (Docs Lookup)  │                    │
+│  └─────────────────┘    │    └─────────────────┘                    │
+└─────────────────────────┴───────────────────────────────────────────┘
 ```
 
-## MCP Connection
+## Kiro CLI + Dory Agent
 
-PULSE agents connect to DORY's MCP server to access all 36 tools:
+The recommended way to use CORTEX interactively is via Kiro CLI with the Dory agent.
+
+### Dory Agent Configuration
+
+Located at `~/.kiro/agents/dory.json`:
+
+```json
+{
+  "name": "dory",
+  "description": "NVIDIA-only agent - uses nvidia-cli and context7 MCP tools",
+  "mcpServers": {
+    "nvidia-cli": {
+      "command": "/opt/homebrew/bin/npx",
+      "args": ["tsx", "/Users/home/Documents/nvidia-cli/mcp-server.ts"],
+      "cwd": "/Users/home/Documents/nvidia-cli",
+      "env": {
+        "NVIDIA_API_KEY": "${NVIDIA_API_KEY}",
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
+        "GOOGLE_CSE_ID": "${GOOGLE_CSE_ID}"
+      }
+    },
+    "context7": {
+      "command": "/opt/homebrew/bin/npx",
+      "args": ["-y", "@upstash/context7-mcp", "--transport", "stdio", "--api-key", "${CONTEXT7_API_KEY}"]
+    }
+  },
+  "hooks": {
+    "agentSpawn": [
+      { "command": "cat ~/.kiro/user-memory.md" }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "@nvidia-cli/memory",
+        "command": "auto-append to user-memory.md on remember operations"
+      }
+    ]
+  },
+  "model": "claude-opus-4.5"
+}
+```
+
+### User Memory Persistence
+
+The `~/.kiro/user-memory.md` file persists preferences across sessions:
+
+```markdown
+# User Preferences & Memory
+
+## Development Preferences
+- **Favorite code/framework**: SwiftUI
+- **Quality standards**: Production-ready with Apple documentation compliance
+
+## Project Context
+- **Current project**: iOS SpaceX App (3-2-1-Liftoff)
+- **Project path**: /Users/home/Documents/iOS/3-2-1-Liftoff
+```
+
+### Quick Start
+
+```bash
+# Start Kiro with Dory agent
+q  # alias for: kiro-cli chat --agent dory
+
+# Stop servers
+qquit
+```
+
+## Codex CLI + PULSE
+
+For autonomous app building, use Codex CLI with PULSE agents.
+
+### PULSE Configuration
+
+Located at `~/.codex/config.toml`:
 
 ```toml
-# ~/.codex/config.toml
+model = "o4-mini"
+model_provider = "openai"
+
 [mcp_servers.dory]
 command = "npx"
-args = ["tsx", "/path/to/CORTEX/dory/mcp-server.ts"]
-cwd = "/path/to/CORTEX/dory"
+args = ["tsx", "/Users/home/Documents/nvidia-cli/mcp-server.ts"]
+cwd = "/Users/home/Documents/nvidia-cli"
 startup_timeout_sec = 120
 tool_timeout_sec = 120
 env = { NVIDIA_API_KEY = "${NVIDIA_API_KEY}" }
 ```
 
-This gives PULSE agents access to:
-- NVIDIA-powered RAG search
-- Vector memory storage
-- File operations with PII protection
-- Web search capabilities
-- Vision analysis
+### Quick Start
+
+```bash
+# Build an app autonomously
+~/.codex/autoogpt.py -p /path/to/project
+
+# QA an app
+~/.codex/autoqagpt.py -p /path/to/project
+```
+
+## What Each Client Gets
+
+All clients connecting to DORY's MCP server get access to:
+
+| Category | Tools |
+|----------|-------|
+| **File System** | `file_read`, `file_write`, `bash`, `set_project`, `get_project` |
+| **RAG** | `rag_ingest`, `rag_search`, `rag_query`, `rag_research`, `rag_stats`, `rag_clear`, `rag_validate`, `rag_update` |
+| **Search** | `google_search`, `parallel_search`, `local_docs_search` |
+| **Memory** | `memory`, `entity_memory`, `unified_memory` |
+| **Code** | `github_analyzer`, `github_file_reader`, `code_documentation`, `documentation_specialist` |
+| **Diagrams** | `mermaid_generator`, `quick_diagram` |
+| **Reports** | `reflection`, `extend_report`, `report_planner`, `section_author`, `report_compiler` |
+| **Flywheel** | `flywheel_log`, `flywheel_stats`, `flywheel_export`, `flywheel_create_dataset` |
+| **Reasoning** | `think` |
 
 ---
 
@@ -285,6 +387,7 @@ flowchart TB
     subgraph User["👤 User"]
         WEB[Web Interface<br/>localhost:3000]
         CLI[Codex CLI<br/>Terminal]
+        KIRO[Kiro CLI<br/>Dory Agent]
     end
 
     subgraph DORY[" DORY"]
@@ -311,6 +414,7 @@ flowchart TB
 
     WEB --> API --> AGENT
     CLI --> LAUNCH --> AGENTS
+    KIRO --> MCP
     
     AGENT --> RAG --> EMB
     AGENT --> MEM --> EMB
