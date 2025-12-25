@@ -30,7 +30,7 @@
 | [**PULSE**](https://github.com/caser-legal/CORTEX/tree/main/pulse) | Persistent Unified Learning Session Engine | Autonomous agent orchestration with session memory |
 
 Together, they create a complete AI development assistant with:
-- **35+ custom tools** for file operations, code search, web research, and more
+- **35 custom tools** for file operations, code search, web research, and more
 - **RAG V2 pipeline** with hybrid retrieval (BM25 + Vector) and reranking
 - **Persistent memory** that remembers across sessions
 - **Autonomous agents** that can build entire applications
