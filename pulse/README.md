@@ -5,14 +5,14 @@
   <a href="#-completion-pipeline"><img src="https://img.shields.io/badge/SwiftUI-iOS%2018+-orange?style=for-the-badge&logo=swift" alt="SwiftUI"></a>
 </p>
 
-<h1 align="center">🧠 PULSE (Codex Edition) 🧠</h1>
+<h1 align="center"> PULSE (Codex Edition) </h1>
 
 <p align="center">
   <strong>Persistent—Unified—Learning—Session—Engine</strong><br>
   <em>Autonomous iOS Development System (Codex CLI)</em>
 </p>
 
-> **📝 Plain Text Output:** Agents run in headless mode (`--full-auto`) which outputs plain text reasoning instead of the interactive TUI. This makes it easier to follow the agent's thinking process during automation.
+> ** Plain Text Output:** Agents run in headless mode (`--full-auto`) which outputs plain text reasoning instead of the interactive TUI. This makes it easier to follow the agent's thinking process during automation.
 
 <p align="center">
   <a href="#-agent-system"><img src="https://img.shields.io/badge/Status-Production-brightgreen?style=flat-square" alt="Status"></a>
@@ -27,7 +27,7 @@
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 # Single app - Build
@@ -45,22 +45,22 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 
 ---
 
-## 📁 Directory Structure
+##  Directory Structure
 
 ```
 ~/.codex/
-├── 🚀 Launchers
+├──  Launchers
 │   ├── autoogpt.py              # Codex coding launcher
 │   └── autoqagpt.py             # Codex QA launcher
 │
-├── 🤖 agents/
+├──  agents/
 │   ├── agent.py                 # Main autonomous loop
 │   ├── agent_qa.py              # QA agent loop
 │   ├── qa_checklist.py          # QA verification
 │   ├── progress.py              # Progress tracking
 │   └── prompts.py               # Prompt management
 │
-├── 📝 prompts/
+├──  prompts/
 │   ├── 1.md                     # Initializer prompt
 │   ├── 2.md                     # Coding prompt
 │   ├── 3.md                     # QA prompt
@@ -68,12 +68,12 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 │   ├── coding_prompt.md         # Implementation
 │   └── qa_prompt.md             # QA verification
 │
-├── 🧠 memory/                   # PULSE memory system
+├──  memory/                   # PULSE memory system
 │   ├── anchor.md                # Tier 0 (95% attention)
 │   ├── semantic.json            # Tier 1 (85% attention)
 │   └── procedural.md            # Tier 2 (60% attention)
 │
-└── ⚙️ scripts/
+└──  scripts/
     ├── memory_sync.py           # Memory sync
     ├── ui_preflight.py          # UI checker
     └── monitor.sh               # Dashboard
@@ -81,7 +81,7 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 
 ---
 
-## 🏗️ System Architecture
+##  System Architecture
 
 ```mermaid
 flowchart TB
@@ -133,7 +133,7 @@ codex --full-auto "Follow instructions in .codex_prompt.md"
 
 ---
 
-## 🤖 Agent System
+##  Agent System
 
 | Mode | Prompt | Trigger |
 |:-----|:-------|:--------|
@@ -154,7 +154,7 @@ flowchart TB
 
 ---
 
-## 🧠 PULSE Memory System
+##  PULSE Memory System
 
 | Tier | File | Attention | Contents |
 |:----:|:-----|:---------:|:---------|
@@ -164,7 +164,7 @@ flowchart TB
 
 ---
 
-## 📊 Completion Pipeline
+##  Completion Pipeline
 
 | Progress | Color | Features |
 |:--------:|:-----:|:---------|
@@ -176,7 +176,7 @@ flowchart TB
 
 ---
 
-## 🔄 Cross-System Compatibility
+##  Cross-System Compatibility
 
 | System | CLI | Command | Config |
 |:-------|:----|:--------|:-------|
@@ -190,5 +190,5 @@ All systems share the same PULSE memory format.
 ---
 
 <p align="center">
-  <sub>Built with 🧠 PULSE + 🤖 OpenAI Codex + ❤️</sub>
+  <sub>Built with  PULSE +  OpenAI Codex + ❤️</sub>
 </p>

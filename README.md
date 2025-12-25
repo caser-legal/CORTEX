@@ -2,7 +2,7 @@
   <img src="dory/public/nvidia-logo.webp" alt="CORTEX" width="120" />
 </p>
 
-<h1 align="center">🧠 CORTEX</h1>
+<h1 align="center"> CORTEX</h1>
 
 <p align="center">
   <strong>CORe + TEX — Unified AI Agent System</strong><br/>
@@ -20,7 +20,7 @@
 
 ---
 
-# 🎯 What is CORTEX?
+#  What is CORTEX?
 
 **CORTEX** is a unified AI agent system that combines two complementary frameworks:
 
@@ -30,7 +30,7 @@
 | [**PULSE**](https://github.com/caser-legal/CORTEX/tree/main/pulse) | Persistent Unified Learning Session Engine | Autonomous agent orchestration with session memory |
 
 Together, they create a complete AI development assistant with:
-- **35 custom tools** for file operations, code search, web research, and more
+- **36 custom tools** for file operations, code search, web research, and more
 - **RAG V2 pipeline** with hybrid retrieval (BM25 + Vector) and reranking
 - **Persistent memory** that remembers across sessions
 - **Autonomous agents** that can build entire applications
@@ -39,7 +39,7 @@ Together, they create a complete AI development assistant with:
 
 ---
 
-# 🚀 Quick Start
+#  Quick Start
 
 ## Prerequisites
 
@@ -119,7 +119,7 @@ env = { NVIDIA_API_KEY = "${NVIDIA_API_KEY}" }
 
 ---
 
-# 🔧 DORY Component
+#  DORY Component
 
 **Location:** `./dory/`
 
@@ -174,7 +174,7 @@ npx tsx mcp-server.ts
 
 ---
 
-# 🤖 PULSE Component
+#  PULSE Component
 
 **Location:** `./pulse/`
 
@@ -254,7 +254,7 @@ CORTEX integrates DORY and PULSE via MCP (Model Context Protocol).
 
 ## MCP Connection
 
-PULSE agents connect to DORY's MCP server to access all 35 tools:
+PULSE agents connect to DORY's MCP server to access all 36 tools:
 
 ```toml
 # ~/.codex/config.toml
@@ -276,7 +276,7 @@ This gives PULSE agents access to:
 
 ---
 
-# 🏗️ Architecture
+#  Architecture
 
 ## Complete System Flow
 
@@ -287,7 +287,7 @@ flowchart TB
         CLI[Codex CLI<br/>Terminal]
     end
 
-    subgraph DORY["🔧 DORY"]
+    subgraph DORY[" DORY"]
         API[Next.js API<br/>Agent Endpoint]
         AGENT[Agent Core<br/>Tool Loop]
         RAG[RAG V2<br/>Hybrid Search]
@@ -296,7 +296,7 @@ flowchart TB
         FLY[Flywheel<br/>Data Logging]
     end
 
-    subgraph PULSE["🤖 PULSE"]
+    subgraph PULSE[" PULSE"]
         LAUNCH[Launchers<br/>autoogpt/autoqagpt]
         AGENTS[Agent System<br/>Init/Code/QA]
         ANCHOR[Anchor Memory<br/>Session State]
@@ -366,7 +366,7 @@ CORTEX/
 
 ---
 
-# 📊 Key Metrics
+#  Key Metrics
 
 | Metric | Value |
 |--------|-------|
@@ -380,7 +380,7 @@ CORTEX/
 
 ---
 
-# 🔐 Security
+#  Security
 
 ## PII Guard (DORY)
 
@@ -402,7 +402,7 @@ Automatically redacts sensitive data:
 
 ---
 
-# 📚 Additional Documentation
+#  Additional Documentation
 
 - **DORY Details:** See `dory/README.md` for complete tool documentation
 - **PULSE Details:** See `pulse/README.md` for agent system documentation
@@ -421,6 +421,6 @@ Automatically redacts sensitive data:
 ---
 
 <p align="center">
-  <sub>Built with 🧠 CORTEX = DORY + PULSE</sub><br/>
+  <sub>Built with  CORTEX = DORY + PULSE</sub><br/>
   <sub>Powered by NVIDIA NIM • OpenAI Codex • ❤️</sub>
 </p>
