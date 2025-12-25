@@ -76,6 +76,52 @@ if !subscriptionManager.isPro {
 }
 ```
 
+### SubscriptionManager IAP Pattern (CRITICAL)
+```swift
+@MainActor
+final class SubscriptionManager: ObservableObject {
+    static let shared = SubscriptionManager()
+    
+    @Published private(set) var purchasedProductIDs: Set<String> = []
+    @Published private(set) var headElfProduct: Product?
+    
+    // CRITICAL: Use SHORT IDs - NOT "caserlegal.AppName.00001"
+    struct IAPProducts {
+        static let headElf = "00001"      // Non-consumable
+        static let tip099 = "tip_099"     // Consumable
+        static let all = [headElf, tip099]
+    }
+    
+    // Subscription uses FULL prefix
+    private let productIDs = ["caserlegal.AppName.monthly"]
+    
+    private init() {
+        Task {
+            await updatePurchasedProducts()
+            await loadIAPProducts()
+        }
+    }
+    
+    func loadIAPProducts() async {
+        let products = try? await Product.products(for: IAPProducts.all)
+        for product in products ?? [] {
+            if product.id == IAPProducts.headElf { headElfProduct = product }
+        }
+    }
+    
+    func purchase(_ product: Product) async -> Bool {
+        let result = try? await product.purchase()
+        if case .success(let verification) = result,
+           case .verified(let transaction) = verification {
+            purchasedProductIDs.insert(transaction.productID)
+            await transaction.finish()
+            return true
+        }
+        return false
+    }
+}
+```
+
 ### Onboarding Page Buttons (avoid overlap)
 ```swift
 TabView { pages }
@@ -85,6 +131,61 @@ TabView { pages }
             .padding(.horizontal, 34)
             .padding(.bottom, 34)
     }
+```
+
+### GlassCard Pattern (MASTER.md)
+```swift
+struct GlassCard<Content: View>: View {
+    let content: Content
+    init(@ViewBuilder content: () -> Content) { self.content = content() }
+    var body: some View {
+        content
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 13))
+            .overlay(RoundedRectangle(cornerRadius: 13).stroke(.white.opacity(0.2), lineWidth: 1))
+    }
+}
+```
+
+### ScaleButtonStyle Pattern (MASTER.md)
+```swift
+struct ScaleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+            .onChange(of: configuration.isPressed) { _, pressed in
+                if pressed { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
+            }
+    }
+}
+```
+
+### AnimatedMeshBackground Pattern (MASTER.md)
+```swift
+struct AnimatedMeshBackground: View {
+    @State private var phase: CGFloat = 0
+    var body: some View {
+        TimelineView(.animation) { timeline in
+            MeshGradient(width: 3, height: 3, points: [...], colors: [...])
+        }
+        .ignoresSafeArea()
+    }
+}
+```
+
+### Command Palette Pattern (MASTER.md)
+```swift
+.keyboardShortcut("k", modifiers: .command)
+.sheet(isPresented: $showCommandPalette) { CommandPaletteView() }
+```
+
+### ConfettiView Pattern (MASTER.md)
+```swift
+struct ConfettiView: View {
+    @Binding var isActive: Bool
+    // Particle system for celebration on success/purchase
+}
 ```
 
 ## Resolved Issues
