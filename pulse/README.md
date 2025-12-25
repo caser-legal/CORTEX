@@ -1,12 +1,33 @@
-# PULSE
+<p align="center">
+  <a href="#-system-architecture"><img src="https://img.shields.io/badge/Platform-macOS-blue?style=for-the-badge&logo=apple" alt="Platform"></a>
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/Python-3.11+-green?style=for-the-badge&logo=python" alt="Python"></a>
+  <a href="https://openai.com/codex"><img src="https://img.shields.io/badge/Codex-CLI-412991?style=for-the-badge&logo=openai" alt="Codex"></a>
+  <a href="#-completion-pipeline"><img src="https://img.shields.io/badge/SwiftUI-iOS%2018+-orange?style=for-the-badge&logo=swift" alt="SwiftUI"></a>
+</p>
 
-Persistent Unified Learning Session Engine
+<h1 align="center">🧠 PULSE (Codex Edition) 🧠</h1>
 
-Autonomous iOS Development System powered by Codex CLI
+<p align="center">
+  <strong>Persistent—Unified—Learning—Session—Engine</strong><br>
+  <em>Autonomous iOS Development System (Codex CLI)</em>
+</p>
+
+> **📝 Plain Text Output:** Agents run in headless mode (`--full-auto`) which outputs plain text reasoning instead of the interactive TUI. This makes it easier to follow the agent's thinking process during automation.
+
+<p align="center">
+  <a href="#-agent-system"><img src="https://img.shields.io/badge/Status-Production-brightgreen?style=flat-square" alt="Status"></a>
+  <a href="#-features"><img src="https://img.shields.io/badge/Apps%20Built-50+-blue?style=flat-square" alt="Apps"></a>
+  <a href="#-completion-pipeline"><img src="https://img.shields.io/badge/Features%2FApp-300+-orange?style=flat-square" alt="Features"></a>
+</p>
+
+<p align="center">
+  <strong>Powered by <a href="https://openai.com/codex">OpenAI Codex CLI</a></strong><br>
+  <em>Advanced reasoning, function calling, full autonomy</em>
+</p>
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # Single app - Build
@@ -24,22 +45,22 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 
 ---
 
-## Directory Structure
+## 📁 Directory Structure
 
 ```
 ~/.codex/
-├── Launchers
+├── 🚀 Launchers
 │   ├── autoogpt.py              # Codex coding launcher
 │   └── autoqagpt.py             # Codex QA launcher
 │
-├── agents/
+├── 🤖 agents/
 │   ├── agent.py                 # Main autonomous loop
 │   ├── agent_qa.py              # QA agent loop
 │   ├── qa_checklist.py          # QA verification
 │   ├── progress.py              # Progress tracking
 │   └── prompts.py               # Prompt management
 │
-├── prompts/
+├── 📝 prompts/
 │   ├── 1.md                     # Initializer prompt
 │   ├── 2.md                     # Coding prompt
 │   ├── 3.md                     # QA prompt
@@ -47,12 +68,12 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 │   ├── coding_prompt.md         # Implementation
 │   └── qa_prompt.md             # QA verification
 │
-├── memory/                      # PULSE memory system
+├── 🧠 memory/                   # PULSE memory system
 │   ├── anchor.md                # Tier 0 (95% attention)
 │   ├── semantic.json            # Tier 1 (85% attention)
 │   └── procedural.md            # Tier 2 (60% attention)
 │
-└── scripts/
+└── ⚙️ scripts/
     ├── memory_sync.py           # Memory sync
     ├── ui_preflight.py          # UI checker
     └── monitor.sh               # Dashboard
@@ -60,105 +81,114 @@ autoqagpt -p /Users/home/Documents/iOS/AppName
 
 ---
 
-## System Architecture
+## 🏗️ System Architecture
 
-```
-Launch Layer
-├── autoogpt.py
-└── autoqagpt.py
-        │
-        v
-Agent Layer
-├── agent.py
-└── agent_qa.py
-        │
-        v
-Codex CLI
-├── codex --full-auto
-└── .codex_prompt.md
-        │
-        v
-Memory System
-├── anchor.md (Tier 0)
-├── semantic.json (Tier 1)
-└── procedural.md (Tier 2)
-```
-
----
-
-## Agent System
-
-### AutoOGPT (Coding Agent)
-
-Autonomous app builder that:
-1. Reads feature list from progress.json
-2. Implements features one by one
-3. Runs xcodebuild to verify compilation
-4. Updates progress tracking
-5. Continues until all features complete
-
-### AutoQAGPT (QA Agent)
-
-Quality assurance agent that:
-1. Reviews implemented features
-2. Runs UI preflight checks
-3. Verifies SwiftUI best practices
-4. Reports issues and suggestions
-
----
-
-## Memory System
-
-Three-tier memory architecture:
-
-| Tier | File | Attention | Purpose |
-|------|------|-----------|---------|
-| 0 | anchor.md | 95% | Critical context, current task |
-| 1 | semantic.json | 85% | Project knowledge, patterns |
-| 2 | procedural.md | 60% | General procedures, templates |
-
-Memory persists across sessions and syncs automatically.
-
----
-
-## Features
-
-- Autonomous iOS app development
-- SwiftUI/iOS 18 best practices
-- Automatic compilation verification
-- Progress tracking and resumption
-- Multi-agent coordination
-- Session memory persistence
-
----
-
-## Integration with DORY
-
-PULSE can use DORY's tools via MCP:
-
-```toml
-[mcp_servers.nvidia-cli]
-command = "npx"
-args = ["tsx", "/path/to/dory/mcp-server.ts"]
+```mermaid
+flowchart TB
+    subgraph Launch["Launch Layer"]
+        A1[autoogpt.py]
+        A2[autoqagpt.py]
+    end
+    
+    subgraph Agent["Agent Layer"]
+        D[agent.py]
+        E[agent_qa.py]
+    end
+    
+    subgraph CLI["Codex CLI"]
+        F[codex --full-auto]
+        G[.codex_prompt.md]
+    end
+    
+    subgraph Core["AI Core"]
+        I[OpenAI Codex]
+    end
+    
+    subgraph Memory["PULSE Memory"]
+        J[anchor.md]
+        K[semantic.json]
+    end
+    
+    A1 --> D --> F
+    A2 --> E --> F
+    F --> G --> I
+    I <--> J & K
 ```
 
-This gives PULSE access to:
-- RAG search over codebases
-- Persistent vector memory
-- Vision analysis for UI review
-- Web search capabilities
+### CLI Execution Flow
+
+```bash
+# Agent writes prompt to temp file
+echo "$PROMPT_CONTENT" > .codex_prompt.md
+
+# Codex CLI reads and executes
+codex --full-auto "Follow instructions in .codex_prompt.md"
+
+# Output streamed back to agent
+```
+
+**Key flags:**
+- `--full-auto` = Full autonomous mode, auto-approve all actions
+- Positional argument = The prompt/instruction
 
 ---
 
-## Requirements
+## 🤖 Agent System
 
-- Python 3.11+
-- Codex CLI (npm install -g @openai/codex)
-- Xcode 16+ (for iOS development)
-- OpenAI API key
+| Mode | Prompt | Trigger |
+|:-----|:-------|:--------|
+| **Initializer** | `@1` → `1.md` | No feature_list.json or < 150 features |
+| **Coder** | `@2` → `2.md` | Has features, not 100% passing |
+| **QA** | `@3` → `3.md` | 100% features passing |
+
+```mermaid
+flowchart TB
+    A[autoogpt -p] --> B{feature_list.json?}
+    B -->|No| C[initializer @1]
+    B -->|Yes| D{< 150 features?}
+    D -->|Yes| C
+    D -->|No| E{100% passing?}
+    E -->|No| F[coder @2]
+    E -->|Yes| G[qa @3]
+```
 
 ---
 
-## License
+## 🧠 PULSE Memory System
 
-MIT
+| Tier | File | Attention | Contents |
+|:----:|:-----|:---------:|:---------|
+| 🔴 **0** | `anchor.md` | **95%** | MUST/NEVER rules, project state |
+| 🟠 **1** | `semantic.json` | **85%** | Facts, patterns, preferences |
+| 🟡 **2** | `procedural.md` | **60%** | Code patterns, commands |
+
+---
+
+## 📊 Completion Pipeline
+
+| Progress | Color | Features |
+|:--------:|:-----:|:---------|
+| 0-9% | 🔴 Red | 0-29 passing |
+| 10-49% | 🟡 Yellow | 30-149 passing |
+| 50-99% | 🟠 Orange | 150-299 passing |
+| 100% | 🟢 Green | 300+ passing |
+| Verified | ⚪ Gray | QA 100% |
+
+---
+
+## 🔄 Cross-System Compatibility
+
+| System | CLI | Command | Config |
+|:-------|:----|:--------|:-------|
+| **Codex** | `codex` | `codex --full-auto "..."` | `~/.codex/` |
+| **Kiro** | `kiro-cli` | `kiro-cli chat --agent X "@N"` | `~/.kiro/` |
+| **Gemini** | `gemini` | `gemini -p "..." --yolo` | `~/.gemini/` |
+| **Z.ai** | `claude` | `claude -p "..."` | `~/.zai/` |
+
+All systems share the same PULSE memory format.
+
+---
+
+<p align="center">
+  <sub>Built with 🧠 PULSE + 🤖 OpenAI Codex + ❤️</sub>
+</p>
