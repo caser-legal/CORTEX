@@ -1,0 +1,2 @@
+prefix_rule(pattern=["xcodebuild", "-project", "MoodScribe.xcodeproj", "-scheme", "MoodScribe", "-configuration", "Debug", "-destination", "generic/platform=iOS", "clean", "build", "-derivedDataPath", "derivedData", "-allowProvisioningUpdates"], decision="allow")
+prefix_rule(pattern=["rm", "-rf", "~/Library/Developer/Xcode/DerivedData/*"], decision="allow")

@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.next/
+__pycache__/
+*.pyc
+
+# Environment files (contain secrets)
+.env
+.env.local
+.env*.local
+config.toml
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+*.log
+log/
+
+# Personal data
+history.jsonl
+sessions/
+.rag-store.json
+
+# Memory stores (user data)
+~/.nvidia-cli/
+~/.codex/memory/*.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.kiro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive files
+*.rtf
+*.pem
+*.key
+nvidia-nim-keys*

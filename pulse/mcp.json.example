@@ -1,0 +1,43 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "/opt/homebrew/bin/npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--transport",
+        "stdio",
+        "--api-key",
+        "ctx7sk-your-key-here"
+      ],
+      "env": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin"
+      },
+      "timeout": 120000,
+      "autoApprove": [
+        "resolvelibraryid",
+        "getlibrarydocs",
+        "resolve-library-id",
+        "get-library-docs"
+      ]
+    },
+    "perplexity": {
+      "command": "/opt/homebrew/bin/npx",
+      "args": [
+        "-y",
+        "@perplexity-ai/mcp-server"
+      ],
+      "env": {
+        "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+        "PERPLEXITY_API_KEY": "pplx-your-key-here",
+        "PERPLEXITY_TIMEOUT_MS": "60000"
+      },
+      "timeout": 120000,
+      "autoApprove": [
+        "perplexity_search",
+        "perplexity_ask",
+        "perplexity_reason"
+      ]
+    }
+  }
+}

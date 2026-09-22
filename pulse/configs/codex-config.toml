@@ -1,0 +1,76 @@
+model = "nvidia/nemotron-3-nano-30b-a3b"
+model_provider = "nvidia-nim"
+
+# Remove truncation limits - enterprise use needs full output
+tool_output_token_limit = 100000
+
+# Custom instructions for app development workflow
+developer_instructions = """
+CRITICAL FILE EDITING RULE:
+NEVER use sed for multi-line edits or adding imports. This causes catastrophic data loss.
+- sed line numbers shift as you edit, corrupting files
+- Special chars break silently
+- ALWAYS use file_write/str_replace or rewrite entire file instead
+- If editing >3 lines, use file tools, NEVER sed
+
+CRITICAL TOOL ERROR HANDLING:
+When file_write returns "EDIT_FAILED" or "Error":
+- You MUST retry with corrected parameters
+- You MUST NOT claim success if the tool returned an error
+- You MUST NOT hallucinate that edits were made
+- Read the file again to get exact text if old_text wasn't found
+- If multiple occurrences, include more surrounding lines for uniqueness
+- After 3 failed attempts, use operation="write" to replace entire file
+
+When asked to create, redesign, improve, fix, or build an iOS app, you MUST follow this workflow:
+
+PHASE 1: UNDERSTAND (use MCP tools)
+A. nvidia-cli.rag_ingest(path: ".", recursive: true) — index the codebase
+B. nvidia-cli.rag_search("architecture patterns models views") — understand structure
+C. nvidia-cli.file_read main files (App.swift, ContentView.swift)
+D. nvidia-cli.google_search("SwiftUI 2024 best practices iOS 18")
+
+PHASE 2: RESEARCH
+A. nvidia-cli.google_search("[specific feature] SwiftUI implementation")
+B. nvidia-cli.rag_research("current implementation")
+C. nvidia-cli.memory(operation: "recall") — check past learnings
+
+PHASE 3: IMPLEMENT (make actual code changes)
+A. For EACH file: file_read → plan change → file_write → verify
+B. Continue until ALL requested changes are made
+C. Do NOT stop after reading files — you must EDIT them
+
+PHASE 4: BUILD & INSTALL
+A. xcodebuild with -allowProvisioningUpdates -allowProvisioningDeviceRegistration
+B. If build fails: read error, fix code, rebuild
+C. xcrun devicectl device install app
+
+PHASE 5: REPORT
+A. List ALL files modified
+B. Confirm build success and installation
+
+CRITICAL: Do NOT skip phases. Do NOT complete after Phase 1. You MUST reach Phase 4.
+"""
+
+[model_providers.nvidia-nim]
+name = "NVIDIA NIM"
+base_url = "https://integrate.api.nvidia.com/v1"
+env_key = "NGC_API_KEY"
+wire_api = "chat"
+
+[mcp_servers.nvidia-cli]
+command = "npx"
+args = ["tsx", "~/Documents/nvidia-cli/mcp-server.ts"]
+cwd = "~/Documents/nvidia-cli"
+startup_timeout_sec = 120
+tool_timeout_sec = 120
+env = { NVIDIA_API_KEY = "nvapi-your-key-here", NGC_API_KEY = "nvapi-your-key-here", GOOGLE_API_KEY = "your-google-api-key", GOOGLE_CSE_ID = "your-custom-search-engine-id" }
+
+[projects."~/Documents/iOS/*"]
+trust_level = "trusted"
+
+[projects."~"]
+trust_level = "trusted"
+
+[projects."~/Documents/iOS/ExampleApp"]
+trust_level = "trusted"
